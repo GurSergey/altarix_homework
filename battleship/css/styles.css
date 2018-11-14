@@ -1,0 +1,208 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+body{
+    height: 100%;
+    width: 100%;
+}
+
+.playArea
+{
+
+    display: inline-block;
+    position: relative;
+    height: 100%;
+    width: 48%;
+}
+
+.containerSquare
+{
+    position: relative;
+    display: inline-block;
+    bottom: 0;
+    width: 10%;
+}
+.unActive .playSquare
+{
+
+}
+.playSquare
+{
+
+
+    padding-top: 100%;
+    width: 100%;
+}
+.playSquare .colorArea
+{border-radius: 10%;
+    bottom: 0;
+    margin-left: 7.5%;
+    margin-bottom: 7.5%;
+    position: absolute;
+    width: 85%;
+    height: 85%;
+
+}
+.unActive .playSquare .colorArea
+{
+    border: darkgrey;
+
+    background-color: darkgrey;
+}
+
+.placement .playSquare .colorArea
+{
+    border: darkgrey;
+
+    background-color: #6382ff;
+}
+
+
+
+.placement .playSquare .colorArea:hover
+{
+    border: darkgrey;
+    background-color: #303cff;
+}
+
+.placement .playSquare .colorArea.isSelect
+{
+    background-color: #ff950e;
+}
+
+.placement .playSquare .colorArea.isSelect:hover
+{
+    background-color: #ff8100;
+}
+
+.hit .playSquare .colorArea
+{
+    background-color: #6382ff;
+}
+
+.hit .playSquare .colorArea:hover
+{
+    background-color: #303cff;
+}
+
+.hit .playSquare .colorArea.isSelect
+{
+    background-color: #fffd0a;
+}
+.hit .playSquare .colorArea.isSelect:hover
+{
+    background-color: #fff13d;
+}
+
+.hit .playSquare .colorArea.hitEmpty
+{
+    background-color: #00ffd2;
+}
+
+.hit .playSquare .colorArea.hitSquare
+{
+    background-color: #ff3928;
+}
+
+.stateMy .playSquare .colorArea
+{
+    background-color: #6382ff;
+}
+
+.stateMy .playSquare .colorArea.hitEmpty
+{
+    background-color: #00ffd2;
+}
+
+.stateMy .playSquare .colorArea.hitSquare
+{
+    background-color: #ff3928;
+}
+
+.stateMy .playSquare .colorArea.notEmpty
+{
+    background-color: #ff950e;
+}
+
+
+
+.container
+{
+    font-size: 0;
+    margin-left:10px;
+    width: 80%;
+}
+
+
+.playField
+{
+
+    width: 100%;
+
+    position: relative;
+}
+#actionField
+{
+    margin-top: 20px;
+    margin-left: 20px;
+}
+h2
+{
+    text-align: center;
+    font-size: 20pt;
+    font-weight: bold;
+}
+h2
+{
+    text-align: center;
+    font-size: 20pt;
+    font-weight: bold;
+}
+
+#informationBlock
+{
+    align: center;
+    display: block;
+}
