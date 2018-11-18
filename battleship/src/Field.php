@@ -5,6 +5,7 @@
  * Date: 11.11.2018
  * Time: 22:35
  */
+
 class Field
 {
     private $field;

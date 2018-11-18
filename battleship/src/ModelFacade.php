@@ -5,6 +5,8 @@
  * Date: 11.11.2018
  * Time: 22:38
  */
+
+
 class ModelFacade
 {
     public function newSession(EnumTypeSession $type)

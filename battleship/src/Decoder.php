@@ -6,6 +6,7 @@
  * Time: 13:34
  */
 
+
 interface Decoder
 {
 

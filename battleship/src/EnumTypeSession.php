@@ -18,7 +18,7 @@ class EnumTypeSession// extends SplEnum
     {
         $this->code = $code;
     }
-    public function getCode($int)
+    public function getCode()
     {
         return $this->code;
     }

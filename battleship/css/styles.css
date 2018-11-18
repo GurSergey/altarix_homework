@@ -107,12 +107,12 @@ body{
     background-color: #303cff;
 }
 
-.placement .playSquare .colorArea.isSelect
+.placement .playSquare.isSelect .colorArea
 {
     background-color: #ff950e;
 }
 
-.placement .playSquare .colorArea.isSelect:hover
+.placement .playSquare.isSelect .colorArea:hover
 {
     background-color: #ff8100;
 }
@@ -127,21 +127,21 @@ body{
     background-color: #303cff;
 }
 
-.hit .playSquare .colorArea.isSelect
+.hit .playSquare.isSelect .colorArea
 {
     background-color: #fffd0a;
 }
-.hit .playSquare .colorArea.isSelect:hover
+.hit .playSquare.isSelect .colorArea:hover
 {
     background-color: #fff13d;
 }
 
-.hit .playSquare .colorArea.hitEmpty
+.hit .playSquare.hitEmpty .colorArea
 {
     background-color: #00ffd2;
 }
 
-.hit .playSquare .colorArea.hitSquare
+.hit .playSquare.hitSquare .colorArea
 {
     background-color: #ff3928;
 }
@@ -151,22 +151,20 @@ body{
     background-color: #6382ff;
 }
 
-.stateMy .playSquare .colorArea.hitEmpty
+.stateMy .playSquare.hitEmpty .colorArea
 {
     background-color: #00ffd2;
 }
 
-.stateMy .playSquare .colorArea.hitSquare
+.stateMy .playSquare.hitSquare .colorArea
 {
     background-color: #ff3928;
 }
 
-.stateMy .playSquare .colorArea.notEmpty
+.stateMy .playSquare.notEmpty .colorArea
 {
     background-color: #ff950e;
 }
-
-
 
 .container
 {
