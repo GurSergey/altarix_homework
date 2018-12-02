@@ -11,7 +11,7 @@ class App
 {
     public function __construct()
     {
-        new Controller();
+        (new Controller())->start();
     }
 }
 

@@ -14,13 +14,31 @@ class Controller{
     private $encoder;
     private $decoder;
 
+
+    const ERROR_TEXT = 'ErrorFields! ';
+    const COMMAND_NAME_PARAM = 'command';
+    const ID_NAME_PARAM = 'idSession';
+    const NAME_PLAYER_NAME_PARAM = 'name';
+    const NUM_NAME_PARAM = 'num';
+    const PLACEMENT_NAME_PARAM = 'placement';
+    const X_NAME_PARAM = 'x';
+    const Y_NAME_PARAM = 'y';
+    const TYPE_NAME_PARAM = 'type';
+
+    const NEW_SESSION_COMMAND = 'newSession';
+    const NEW_PLAYER_COMMAND = 'newPlayer';
+    const PLACEMENT_SHIPS_COMMAND = 'placementShips';
+    const STATE_FIELD_COMMAND = 'currentStateField';
+    const SHOOT_PLAYER_COMMAND = 'shootPlayer';
+    const NEW_GAME_COMMAND = 'newGame';
+
     private function checkField(... $fields)
     {
         foreach ($fields as $field)
         {
             if (!isset($_POST[$field]))
             {
-                echo "ErrorFields! ".$field;
+                echo self::ERROR_TEXT.$field;
                 die();
             }
         }
@@ -28,11 +46,6 @@ class Controller{
 
     public function __construct()
     {
-        $this->checkField('command');
-        $command = $_POST['command'];
-        $model = new ModelFacade();
-
-
         switch (self::typeDecodeEncoder)
         {
             case 0:
@@ -44,97 +57,57 @@ class Controller{
                 $this->encoder = new JSONEncoder();
                 break;
         }
+    }
 
+    public function start()
+    {
+        $this->checkField(self::COMMAND_NAME_PARAM);
+        $command = $_POST[self::COMMAND_NAME_PARAM];
+
+        $model = new GameFacade();
         switch ($command)
         {
-            case 'newSession':
-                $this->checkField('type');
-                $type = new EnumTypeSession($_POST['type']);
+            case self::NEW_SESSION_COMMAND:
+                $this->checkField(self::TYPE_NAME_PARAM);
+                $type = new EnumTypeSession($_POST[self::TYPE_NAME_PARAM]);
                 echo $model->newSession($type);
                 break;
-            case 'newPlayer1':
-                $this->checkField('idSession', 'name1');
-                $id = $_POST['idSession'];
-                $name = $_POST['name1'];
-                $model->createPlayer1($name, $id);
-                echo 'ok';
+            case self::NEW_PLAYER_COMMAND:
+                $this->checkField(self::ID_NAME_PARAM, self::NAME_PLAYER_NAME_PARAM, self::NUM_NAME_PARAM);
+                $id = $_POST[self::ID_NAME_PARAM];
+                $name = $_POST[self::NAME_PLAYER_NAME_PARAM];
+                $num = $_POST[self::NUM_NAME_PARAM];
+                $model->createPlayer($name, $id, $num);
+                echo $this->encoder->encodeOK();
                 break;
-            case 'newPlayer2':
-                $this->checkField('idSession', 'name2');
-                $id = $_POST['idSession'];
-                $name = $_POST['name2'];
-                $model->createPlayer2($name, $id);
-                echo 'ok';
+            case self::PLACEMENT_SHIPS_COMMAND:
+                $this->checkField(self::ID_NAME_PARAM, self::PLACEMENT_NAME_PARAM, self::NUM_NAME_PARAM);
+                $id = $_POST[self::ID_NAME_PARAM];
+                $placement = $_POST[self::PLACEMENT_NAME_PARAM];
+                $num = $_POST[self::NUM_NAME_PARAM];
+                $model->placeShips($this->decoder->decodeField($placement), $id, $num);
+                echo $this->encoder->encodeOK();
                 break;
-            case 'placementShips1':
-                $this->checkField('idSession', 'placement');
-                $id = $_POST['idSession'];
-                $placement = $_POST['placement'];
-                $model->placeShips1($this->decoder->decodeField($placement), $id);
-                echo 'ok';
+            case self::STATE_FIELD_COMMAND:
+                $this->checkField(self::ID_NAME_PARAM, self::NUM_NAME_PARAM);
+                $id = $_POST[self::ID_NAME_PARAM];
+                $num = $_POST[self::NUM_NAME_PARAM];
+                echo $this->encoder->encodeField($model->currentStateField($id, $num));
                 break;
-            case 'placementShips2':
-                $this->checkField('idSession', 'placement');
-                $id = $_POST['idSession'];
-                $placement = $_POST['placement'];
-                $model->placeShips2($this->decoder->decodeField($placement), $id);
-                echo 'ok';
+            case self::SHOOT_PLAYER_COMMAND:
+                $this->checkField(self::ID_NAME_PARAM, self::X_NAME_PARAM, self::Y_NAME_PARAM, self::NUM_NAME_PARAM);
+                $id = $_POST[self::ID_NAME_PARAM];
+                $x = $_POST[self::X_NAME_PARAM];
+                $y = $_POST[self::Y_NAME_PARAM];
+                $num = $_POST[self::NUM_NAME_PARAM];
+                $hit = $model->shootPlayer($x, $y, $id, $num);
+                echo $this->encoder->encodeShoot($hit, $model->isEnd($id), $num);
                 break;
-            case 'currentStateField1':
-                $this->checkField('idSession');
-                $id = $_POST['idSession'];
-                echo $this->encoder->encodeField($model->currentStateField1($id));
-                break;
-            case 'currentStateField2':
-                $this->checkField('idSession');
-                $id = $_POST['idSession'];
-                echo $this->encoder->encodeField($model->currentStateField2($id));
-                break;
-            case 'shootPlayer1':
-                $this->checkField('idSession', 'x', 'y');
-                $id = $_POST['idSession'];
-                $x = $_POST['x'];
-                $y = $_POST['y'];
-                $hit = $model->shootPlayer1($x, $y, $id);
-                if($hit)
-                {
-                    if($model->isEnd($id)==true) {
-                        echo 'win p1';
-                    }
-                    else {
-                        echo '1';
-                    }
-                }
-                else
-                {
-                    echo '0';
-                }
-                break;
-            case 'shootPlayer2':
-                $this->checkField('idSession', 'x', 'y');
-                $id = $_POST['idSession'];
-                $x = $_POST['x'];
-                $y = $_POST['y'];
-                $hit = $model->shootPlayer2($x, $y, $id);
-                if($hit)
-                {
-                    if($model->isEnd($id)==true){
-                        echo 'win p2';
-                    }
-                    else{
-                        echo '1';
-                    }
-                }
-                else
-                {
-                    echo '0';
-                }
-                break;
-            case 'NewGame':
-                $this->checkField('idSession');
-                $id = $_POST['idSession'];
+            case self::NEW_GAME_COMMAND:
+                $this->checkField(self::ID_NAME_PARAM);
+                $id = $_POST[self::ID_NAME_PARAM];
                 $model->createNewGame($id);
-                echo 'ok';
+                echo $this->encoder->encodeOK();
                 break;
             default:
                 echo 'errorCommand';

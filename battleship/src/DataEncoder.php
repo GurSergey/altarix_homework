@@ -8,34 +8,65 @@
 
 
 
-class DataEncoder// implements Encoder
+class DataEncoder implements Encoder
 {
+    const CELL_IS_BUSY = '1 ';
+    const CELL_IS_NOT_BUSY = '0 ';
+    const CELL_IS_SHOT = '1 ';
+    const CELL_IS_NOT_SHOT = '0 ';
+    const DELIMITER = 'f ';
 
-    public static function encodeField(Field $field)
+    const OK = 'ok';
+
+    const WIN_STR = 'w';
+    const HIT ='1';
+    const MISS ='0';
+    const PLAYER_ONE = 0;
+    const PLAYER_TWO = 1;
+
+    public function encodeField(Field $field):string
     {
-        //var_dump(count($field->getField()));
+
         $state = '';
-        foreach ($field->getField() as $line)
+        for($i = 0; $i <Field::SIZE_FIELD; $i++)
         {
-            foreach ($line as $square)
+            for ($i1 = 0; $i1 < Field::SIZE_FIELD; $i1++)
             {
-                $state .= $square->getBusy()?'1 ':'0 ';
+                $state .= $field->getSquare($i, $i1)->getBusy()?self::CELL_IS_BUSY:self::CELL_IS_NOT_BUSY;
             }
         }
-        $state .='f ';
-        foreach ($field->getField() as $line)
+        $state .=self::DELIMITER;
+        for($i = 0; $i <Field::SIZE_FIELD; $i++)
         {
-            foreach ($line as $square)
+            for ($i1 = 0; $i1 < Field::SIZE_FIELD; $i1++)
             {
-                $state .= $square->getIsShot()?'1 ':'0 ';
+                $state .= $field->getSquare($i, $i1)->getIsShot()?self::CELL_IS_SHOT:self::CELL_IS_NOT_SHOT;
             }
         }
         return $state;
     }
 
-    public static function encodeShotField(Field $field)
-    {
-        $state = '';
 
+    public function encodeOK():string
+    {
+       return self::OK;
+    }
+
+    public function encodeShoot(bool $hit, bool $isEnd, int $num): string
+    {
+        if($hit)
+        {
+            if($isEnd==true) {
+                return self::WIN_STR;
+
+            }
+            else {
+                return self::HIT;
+            }
+        }
+        else
+        {
+            return self::MISS;
+        }
     }
 }

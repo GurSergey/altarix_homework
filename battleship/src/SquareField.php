@@ -10,6 +10,7 @@ class SquareField
 {
     private $squareIsBusy = false;
     private $squareIsShot = false;
+   // private $
 
     public function __construct(bool $squareIsBusy)
     {

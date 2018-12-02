@@ -10,41 +10,41 @@ $(document).ready(function() {
     let bodyEnum = Object.freeze({
             "newSession": 0,
             "newPlayer1": function () {
-                return 'command=newPlayer1&idSession=' + currentSession +
-                    '&name1=' + $("namePlayer").val();
+                return 'command=newPlayer&idSession=' + currentSession +
+                    '&name=' + $("namePlayer").val()+'&num=0';
             },
             "newPlayer2": function () {
-                return 'command=newPlayer2&idSession=' + currentSession +
-                    '&name2=' + $("namePlayer").val();
+                return 'command=newPlayer&idSession=' + currentSession +
+                    '&name=' + $("namePlayer").val()+'&num=1';
             },
             "placementShips1": function () {
-                return 'command=placementShips1&idSession=' + currentSession +
-                    '&placement=' + getStateField(0);
+                return 'command=placementShips&idSession=' + currentSession +
+                    '&placement=' + getStateField(0)+'&num=0';
             },
             "placementShips2": function () {
-                return 'command=placementShips2&idSession=' + currentSession +
-                    '&placement=' + getStateField(1);
+                return 'command=placementShips&idSession=' + currentSession +
+                    '&placement=' + getStateField(1)+'&num=1';
             },
             "stateField1": function () {
-                return 'command=currentStateField1&idSession=' + currentSession;
+                return 'command=currentStateField&idSession=' + currentSession+'&num=0';
             },
             "stateField2": function () {
-                return 'command=currentStateField2&idSession=' + currentSession;
+                return 'command=currentStateField&idSession=' + currentSession+'&num=1';
             },
             "shootPlayer1": function (x, y) {
-                return 'command=shootPlayer1&idSession=' + currentSession + '&x=' + x + '&y=' + y;
+                return 'command=shootPlayer&idSession=' + currentSession + '&x=' + x + '&y=' + y+'&num=1';
             },
             "shootPlayer2": function (x, y)
             {
-                return 'command=shootPlayer2&idSession=' + currentSession + '&x=' + x + '&y=' + y;
+                return 'command=shootPlayer&idSession=' + currentSession + '&x=' + x + '&y=' + y+'&num=0';
             },
             "currentStateField1":function()
             {
-                return 'command=currentStateField1&idSession='+currentSession;
+                return 'command=currentStateField&idSession='+currentSession+'&num=0';
             },
             "currentStateField2":function()
             {
-                return 'command=currentStateField1&idSession='+currentSession;
+                return 'command=currentStateField&idSession='+currentSession+'&num=1';
             }});
 
     let currentSession =1;
@@ -139,8 +139,9 @@ $(document).ready(function() {
                 });
                 break;
             case stateEnum.placementShips2:
-                response(bodyEnum.placementShips2(), function()
+                response(bodyEnum.placementShips2(), function(data)
                 {
+                    console.log(data);
                     $("#informationLabel").text("Нажмите далее игрок 1");
                     $($(".playField").get(1)).removeClass("placement").addClass("unActive");
                     currentState = stateEnum.waitPlayer1;
@@ -149,14 +150,15 @@ $(document).ready(function() {
             case stateEnum.waitPlayer1:
                 response(bodyEnum.stateField1(), function(data)
                 {
-                        setStateField(data, 0, true);
-                        $("#informationLabel").text("Делайте свой ход игрок 1");
-                        $($(".playField").get(1)).removeClass("placement");
-                        currentState = stateEnum.movePlayer1;
-                        response(bodyEnum.stateField2(), function(data)
-                        {
-                            setStateField(data, 1, false);
-                        });
+                    console.log(data);
+                    setStateField(data, 0, true);
+                    $("#informationLabel").text("Делайте свой ход игрок 1");
+                    $($(".playField").get(1)).removeClass("placement");
+                    currentState = stateEnum.movePlayer1;
+                    response(bodyEnum.stateField2(), function(data)
+                    {
+                        setStateField(data, 1, false);
+                    });
                 });
 
                 break;
@@ -182,13 +184,13 @@ $(document).ready(function() {
                     removeClass("hitSquare").removeClass("notEmpty");
                 }
 
-                alert(x);
-                alert(y);
+                //alert(x);
+                //alert(y);
                 response(bodyEnum.shootPlayer1(x, y), function(data)
                 {
-
+                    console.log(data);
                         str =data;
-                        if(str == "win p1") {
+                        if(str == "w") {
                             $("#informationLabel").text("Игрок 1 выиграл конец игры");
                             currentState = stateEnum.newGame;
                         }
@@ -210,6 +212,7 @@ $(document).ready(function() {
             case stateEnum.waitPlayer2:
                 response(bodyEnum.stateField2(), function(data)
                 {
+                    console.log(data);
                     setStateField(data, 1, true);
                     $("#informationLabel").text("Делайте свой ход игрок 2");
                     $($(".playField").get(0)).removeClass("placement");
@@ -250,9 +253,9 @@ $(document).ready(function() {
                 //alert(y);
                 response(bodyEnum.shootPlayer2(x, y), function(data)
                 {
-
+                    console.log(data);
                     str = data;
-                    if(str == "win p2") {
+                    if(str == "w") {
                         $("#informationLabel").text("Игрок 2 выиграл конец игры");
                         currentState = stateEnum.newGame;
                     }

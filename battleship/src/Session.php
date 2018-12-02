@@ -11,11 +11,13 @@ class Session
     private $id;
     private $token;
     private $currentGame;
+
     private $timeCreated;
     private $timeLastAction;
-    private $player1;
-    private $player2;
+
+    private $players;
     private $type;
+
 
     const dir = 'sessions';
 
@@ -23,6 +25,7 @@ class Session
 
     public function __construct(EnumTypeSession $type)
     {
+
         $this->timeCreated = time();
         $this->timeLastAction = time();
         $this->type = $type;
@@ -48,70 +51,30 @@ class Session
 
     }
 
-    public function isEnd()
+    public function getGame():Game
     {
-        return $this->currentGame->isEnd();
+        return $this->currentGame;
     }
 
-    public function getId()
+    public function getId():int
     {
-        $this->timeLastAction = time();
         return $this->id;
     }
 
-    public function setPlayer1(Player $player)
+    public function setPlayer(Player $player, int $num)
     {
-        $this->timeLastAction = time();
-        $this->player1 = $player;
+        if($num > ConstantsGame::MAX_NUM|| $num < ConstantsGame::MIN_NUM)
+        {
+            var_dump("error player");
+            die();
+        }
+        $this->players[$num] = $player;
     }
-
-    public function setPlayer2(Player $player)
-    {
-        $this->timeLastAction = time();
-        $this->player2 = $player;
-    }
-
-    public function setField1(Field $field)
-    {
-        $this->timeLastAction = time();
-        $this->currentGame->setField1($field);
-    }
-
-    public function setField2(Field $field)
-    {
-        $this->timeLastAction = time();
-        $this->currentGame->setField2($field);
-    }
-
-    public function getField1():Field
-    {
-        $this->timeLastAction = time();
-        return $this->currentGame->getField1();
-    }
-
-    public function getField2():Field
-    {
-        $this->timeLastAction = time();
-        return $this->currentGame->getField2();
-    }
-
-    public function shootPlayer1(int $x, int $y):bool
-    {
-        $this->timeLastAction = time();
-        return $this->currentGame->shootField2($x, $y);
-    }
-
-    public function shootPlayer2(int $x, int $y):bool
-    {
-        $this->timeLastAction = time();
-        return $this->currentGame->shootField1($x, $y);
-    }
-
 
     public static function loadFromFile($id):Session
     {
 
-        $filename = './'.DIRECTORY_SEPARATOR."sessions".DIRECTORY_SEPARATOR.$id;
+        $filename = './'.DIRECTORY_SEPARATOR.self::dir.DIRECTORY_SEPARATOR.$id;
         $handle = fopen($filename, 'r');
         $contents = fread($handle, filesize($filename));
         $session = unserialize($contents);

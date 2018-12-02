@@ -4,17 +4,33 @@
  * User: serge
  * Date: 11.11.2018
  * Time: 22:35
+ * Интерфейс Iterator необходим для возможности получения
+ * списка ячеек не привязываясь к внутреннему способу хранения
+ * этих ячеек
  */
 
 class Field
 {
     private $field;
-    const sizeField = 10;
+    //private $currentSquare;
 
+    const SIZE_FIELD = 10;
+    const COUNT_OF_FIVE_DECK_SHIPS = 1;
+    const COUNT_OF_FOUR_DECK_SHIPS = 2;
+    const COUNT_OF_THREE_DECK_SHIPS = 3;
+    const COUNT_OF_TWO_DECK_SHIPS = 4;
+    const COUNT_OF_ONE_DECK_SHIPS = 5;
 
-    public function __construct(array $field)
+    public function __construct()
     {
-        $this->field = $field;
+        for($i = 0; $i < self::SIZE_FIELD; $i++)
+        {
+            $this->field[$i] = array();
+            for($i1 = 0; $i1< self::SIZE_FIELD; $i1++)
+            {
+                $this->field[$i][$i1] = new SquareField(false);
+            }
+        }
     }
 
     public function shipsIsSunk()
@@ -27,12 +43,10 @@ class Field
             {
                 if($square->getBusy() && !$square->getIsShot()) {
                     $flag = false;
-
                     break(2);
                 }
             }
         }
-
         return $flag;
     }
 
@@ -44,18 +58,19 @@ class Field
 
     }
 
-    public function getField()
+    public function checkField():bool
     {
-        //var_dump(count($this->field));
-        return $this->field;
+
     }
 
+    public function setBusyState($x, $y)
+    {
+        $this->field[$x][$y]->setBusy(true);
+    }
 
-//    public function placeShip(int $xStart, int $yStart, int $size, bool $isVertical)
-//    {
-//
-//    }
-
-
+    public function getSquare($x, $y):SquareField
+    {
+        return $this->field[$x][$y];
+    }
 
 }

@@ -8,5 +8,7 @@
 
 interface Encoder
 {
-
+    public function encodeOK():string;
+    public function encodeField(Field $field):string;
+    public function encodeShoot(bool $hit, bool $isEnd ,int $num ):string;
 }

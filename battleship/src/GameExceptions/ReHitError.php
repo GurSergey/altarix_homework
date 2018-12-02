@@ -2,14 +2,13 @@
 /**
  * Created by PhpStorm.
  * User: serge
- * Date: 12.11.2018
- * Time: 16:22
+ * Date: 01.12.2018
+ * Time: 20:19
  */
-class PlacementError extends Exception
+
+class reHitError extends Exception
 {
-    protected $name = "PlacementError";
+    protected $name = "reHitError";
     protected $message = "Невозможно разместить корабль в этой позиции";
-    protected $code = 1;
-
-
+    protected $code = 2;
 }

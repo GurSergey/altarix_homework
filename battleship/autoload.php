@@ -4,18 +4,7 @@
  * User: serge
  * Date: 18.11.2018
  * Time: 14:57
-/**
- * An example of a project-specific implementation.
- *
- * After registering this autoload function with SPL, the following line
- * would cause the function to attempt to load the \Foo\Bar\Baz\Qux class
- * from /path/to/project/src/Baz/Qux.php:
- *
- *      new \Foo\Bar\Baz\Qux;
- *
- * @param string $class The fully-qualified class name.
- * @return void
- */
+*/
 spl_autoload_register(function ($class) {
 
     // project-specific namespace prefix

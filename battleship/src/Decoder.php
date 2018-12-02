@@ -9,5 +9,5 @@
 
 interface Decoder
 {
-
+    public function decodeField(string $strBusy):Field;
 }

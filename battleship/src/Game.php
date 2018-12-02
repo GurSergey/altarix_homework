@@ -10,48 +10,39 @@
 
 class Game
 {
-    private $field1;
-    private $field2;
-
+    private $fields;
+    //private $state;
 
 
     public function __construct($type)
     {
-        $this->field1 = null;
-        $this->field2 = null;
-        $this->type = $type;
+        for($i = ConstantsGame::MIN_NUM; $i < ConstantsGame::MAX_NUM; $i++) {
+            $this->fields[$i] = null;
+        }
     }
 
-    public function getField1()
+    public function getField(int $num):Field
     {
-        return $this->field1;
+        return $this->fields[$num];
     }
 
-    public function getField2()
+
+    public function setField(Field $field,int $num)
     {
-        return $this->field2;
+        $this->fields[$num] = $field;
     }
 
-    public function setField1(Field $field)
+    public function shootField(int $x, int $y, $num):bool
     {
-        $this->field1 = $field;
+        return $this->fields[$num]->shotOnSquare($x, $y);
     }
-
-    public function setField2(Field $field)
-    {
-        $this->field2 = $field;
-    }
-    public function shootField1(int $x, int $y):bool
-    {
-        return $this->field1->shotOnSquare($x, $y);
-    }
-    public function shootField2(int $x, int $y):bool
-    {
-        return $this->field2->shotOnSquare($x, $y);
-    }
-
     public function isEnd()
     {
-        return $this->field1->shipsIsSunk()||$this->field2->shipsIsSunk();
+        for($i = ConstantsGame::MIN_NUM; $i <= ConstantsGame::MAX_NUM; $i++)
+        {
+            if($this->fields[$i]->shipsIsSunk())
+                return true;
+        }
+        return false;
     }
 }

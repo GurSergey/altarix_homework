@@ -7,21 +7,25 @@
  */
 
 
-class DataDecoder// implements Decoder
+class DataDecoder implements Decoder
 {
-    public function decodeField(string $strBusy)
+    const CELL_IS_BUSY = '1';
+    const CELL_IS_NOT_BUSY = '0';
+
+    public function decodeField(string $strBusy):Field
     {
-        $field = array();
+        $field = new Field();
         $state = explode(' ', $strBusy);
-        for($i = 0; $i < Field::sizeField; $i++)
+        for($i = 0; $i < Field::SIZE_FIELD; $i++)
         {
-            $field[] = array();
-            for($i1 = 0; $i1< Field::sizeField; $i1++)
+            for($i1 = 0; $i1< Field::SIZE_FIELD; $i1++)
             {
-                $field[$i][$i1] = new SquareField($state[$i*Field::sizeField+$i1]=='1'?true:false);
+                if($state[$i*Field::SIZE_FIELD+$i1]==self::CELL_IS_BUSY) {
+                    $field->setBusyState($i, $i1);
+                }
             }
         }
-        return new Field($field);
+        return $field;
     }
 
 }
