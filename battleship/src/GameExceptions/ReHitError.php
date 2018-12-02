@@ -6,7 +6,7 @@
  * Time: 20:19
  */
 
-class reHitError extends Exception
+class reHitError extends GameException
 {
     protected $name = "reHitError";
     protected $message = "Невозможно разместить корабль в этой позиции";

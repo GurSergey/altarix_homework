@@ -6,13 +6,13 @@
  * Time: 22:47
  */
 
-class EnumTypeSession// extends SplEnum
+class EnumTypeSession //extends SplEnum
 {
 
     private $code;
     const onOneComputer = 0;
     const withAI = 1;
-    const onTwoComputer = 2;
+    const onTwoComputers = 2;
 
     public function __construct(int $code)
     {

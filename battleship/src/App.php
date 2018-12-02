@@ -6,7 +6,10 @@
  * Time: 22:08
  */
 
-
+/**
+ * @author GurSergey
+ * Класс приложения. по сути точка входа
+ */
 class App
 {
     public function __construct()

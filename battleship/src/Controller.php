@@ -1,12 +1,11 @@
 <?php
+
+
 /**
- * Created by PhpStorm.
- * User: serge
- * Date: 11.11.2018
- * Time: 22:34
+ * @author GurSergey
+ * Контроллер производит получение HTTP запросов, и
+ * кидает в модель новые данные на основе этих запросов
  */
-
-
 
 class Controller{
 
@@ -31,6 +30,9 @@ class Controller{
     const STATE_FIELD_COMMAND = 'currentStateField';
     const SHOOT_PLAYER_COMMAND = 'shootPlayer';
     const NEW_GAME_COMMAND = 'newGame';
+
+
+
 
     private function checkField(... $fields)
     {
@@ -61,6 +63,35 @@ class Controller{
 
     public function start()
     {
+        if(empty($_POST) && empty($_GET))
+        {
+            echo (new MakerStartPage())->getPage();
+            die();
+        }
+
+        $command = $_GET[self::COMMAND_NAME_PARAM];
+        if(isset($command))
+        {
+            switch ($command )
+            {
+                case 'getPage':
+                    $page = $_GET['type'];
+                    switch ($page)
+                    {
+                        case 'onOneComputer':
+                            echo (new MakerOnOnePage())->getPage();
+                            die();
+                            break;
+                        default:
+                            echo 'Unknown page!!!';
+                            die();
+                            break;
+                    }
+                break;
+            }
+        }
+
+
         $this->checkField(self::COMMAND_NAME_PARAM);
         $command = $_POST[self::COMMAND_NAME_PARAM];
 
@@ -73,7 +104,8 @@ class Controller{
                 echo $model->newSession($type);
                 break;
             case self::NEW_PLAYER_COMMAND:
-                $this->checkField(self::ID_NAME_PARAM, self::NAME_PLAYER_NAME_PARAM, self::NUM_NAME_PARAM);
+                $this->checkField(self::ID_NAME_PARAM, self::NAME_PLAYER_NAME_PARAM,
+                    self::NUM_NAME_PARAM);
                 $id = $_POST[self::ID_NAME_PARAM];
                 $name = $_POST[self::NAME_PLAYER_NAME_PARAM];
                 $num = $_POST[self::NUM_NAME_PARAM];
@@ -81,7 +113,8 @@ class Controller{
                 echo $this->encoder->encodeOK();
                 break;
             case self::PLACEMENT_SHIPS_COMMAND:
-                $this->checkField(self::ID_NAME_PARAM, self::PLACEMENT_NAME_PARAM, self::NUM_NAME_PARAM);
+                $this->checkField(self::ID_NAME_PARAM, self::PLACEMENT_NAME_PARAM,
+                    self::NUM_NAME_PARAM);
                 $id = $_POST[self::ID_NAME_PARAM];
                 $placement = $_POST[self::PLACEMENT_NAME_PARAM];
                 $num = $_POST[self::NUM_NAME_PARAM];
@@ -95,7 +128,8 @@ class Controller{
                 echo $this->encoder->encodeField($model->currentStateField($id, $num));
                 break;
             case self::SHOOT_PLAYER_COMMAND:
-                $this->checkField(self::ID_NAME_PARAM, self::X_NAME_PARAM, self::Y_NAME_PARAM, self::NUM_NAME_PARAM);
+                $this->checkField(self::ID_NAME_PARAM, self::X_NAME_PARAM,
+                    self::Y_NAME_PARAM, self::NUM_NAME_PARAM);
                 $id = $_POST[self::ID_NAME_PARAM];
                 $x = $_POST[self::X_NAME_PARAM];
                 $y = $_POST[self::Y_NAME_PARAM];
@@ -111,6 +145,7 @@ class Controller{
                 break;
             default:
                 echo 'errorCommand';
+                die();
                 break;
         }
     }

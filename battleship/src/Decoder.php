@@ -1,12 +1,9 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: serge
- * Date: 13.11.2018
- * Time: 13:34
+ * @author GurSergey
+ * Интерфейс декодировщика информации от пользователя
  */
-
-
 interface Decoder
 {
     public function decodeField(string $strBusy):Field;

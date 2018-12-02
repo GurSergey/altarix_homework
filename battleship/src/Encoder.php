@@ -6,6 +6,11 @@
  * Time: 13:35
  */
 
+/**
+ * @author GurSergey
+ * Интерфейс кодировщика информации от пользователя
+ */
+
 interface Encoder
 {
     public function encodeOK():string;

@@ -1,11 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: serge
- * Date: 01.12.2018
- * Time: 21:20
+ * @author GurSergey
+ * Интерфейс создателя новой сессии. Необходи для работы с разными ипами хранилиш
  */
-
 interface CreatorSession
 {
     public function createSession():Session;

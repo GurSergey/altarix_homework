@@ -1,13 +1,10 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: serge
- * Date: 13.11.2018
- * Time: 10:34
+ * @author GurSergey
+ * Общий интерфейс для ИИ
  */
-
-
-class AI
+interface AI
 {
 
 }
