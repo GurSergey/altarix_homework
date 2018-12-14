@@ -7,7 +7,7 @@
  */
 require_once "autoload.php";
 
-
+define("START_DIR",     __DIR__);
  //$connection = pg_connect("host=localhost user=battleship");
 //$connect = new \PDO('pgsql:dbname=postgres;host=127.0.0.1','postgres','password');
 //if($connect) {
@@ -21,4 +21,4 @@ require_once "autoload.php";
 //}
 //die();
  
- new App();
+ new app\App();
