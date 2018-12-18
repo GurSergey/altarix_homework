@@ -10,7 +10,7 @@
  * Загрузчик сессии из базы данных
  */
 namespace app\Repository;
-use app\Model\EnumTypeSession;
+use app\Model\EnumEncoder;
 use app\Model\Session;
 
 class RepositorySessionDB implements RepositorySession

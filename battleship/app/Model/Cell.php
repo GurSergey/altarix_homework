@@ -13,7 +13,40 @@ class Cell
 {
     private $squareIsBusy = false;
     private $squareIsShot = false;
-   // private $
+    private $x;
+    private $y;
+    /**
+     * @return int
+     */
+    public function getX():int
+    {
+        return $this->x;
+    }
+
+    /**
+     * @param int $x
+     */
+    public function setX(int $x)
+    {
+        $this->x = $x;
+    }
+
+    /**
+     * @return int
+     */
+    public function getY():int
+    {
+        return $this->y;
+    }
+
+    /**
+     * @param int $y
+     */
+    public function setY(int $y)
+    {
+        $this->y = $y;
+    }
+
 
     public function __construct(bool $squareIsBusy)
     {

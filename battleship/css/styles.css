@@ -141,9 +141,14 @@ body{
     background-color: #00ffd2;
 }
 
-.hit .playSquare.hitSquare .colorArea
+.hit .playSquare.hitShip .colorArea
 {
     background-color: #ff3928;
+}
+
+.hit .playSquare.hitSquare .colorArea
+{
+    background-color: #ff48e7;
 }
 
 .stateMy .playSquare .colorArea
@@ -154,6 +159,11 @@ body{
 .stateMy .playSquare.hitEmpty .colorArea
 {
     background-color: #00ffd2;
+}
+
+.stateMy .playSquare.hitShip .colorArea
+{
+    background-color: #ff3928;
 }
 
 .stateMy .playSquare.hitSquare .colorArea

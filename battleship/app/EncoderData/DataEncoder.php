@@ -21,6 +21,7 @@ class DataEncoder implements Encoder
 {
     const CELL_IS_BUSY = '1 ';
     const CELL_IS_NOT_BUSY = '0 ';
+    const CELL_SINK_SHIP = '2 ';
     const CELL_IS_SHOT = '1 ';
     const CELL_IS_NOT_SHOT = '0 ';
     const DELIMITER = 'f ';
@@ -41,7 +42,8 @@ class DataEncoder implements Encoder
         {
             for ($i1 = 0; $i1 < Field::SIZE_FIELD; $i1++)
             {
-                $state .= $field->getSquare($i, $i1)->getBusy()?self::CELL_IS_BUSY:self::CELL_IS_NOT_BUSY;
+                $state .= $field->getCell($i, $i1)->getBusy()?self::CELL_IS_BUSY
+                    :self::CELL_IS_NOT_BUSY;
             }
         }
         $state .=self::DELIMITER;
@@ -49,7 +51,19 @@ class DataEncoder implements Encoder
         {
             for ($i1 = 0; $i1 < Field::SIZE_FIELD; $i1++)
             {
-                $state .= $field->getSquare($i, $i1)->getIsShot()?self::CELL_IS_SHOT:self::CELL_IS_NOT_SHOT;
+                if($field->getCell($i, $i1)->getIsShot())
+                {
+                    if(($field->getCell($i, $i1)->getBusy())&&
+                    ($field->getShipByCell($i, $i1)->isSunk())){
+                            $state .=  self::CELL_SINK_SHIP;
+                    }
+                    else {
+                        $state .= self::CELL_IS_SHOT;
+                    }
+                }
+                else {
+                    $state .= self::CELL_IS_NOT_SHOT;
+                }
             }
         }
         return $state;

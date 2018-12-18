@@ -6,7 +6,7 @@
  * Time: 19:47
  */
 namespace app\Repository;
-use app\Model\EnumTypeSession;
+use app\Model\EnumEncoder;
 use app\Model\Session;
 
 class RepositorySessionJSON implements RepositorySession

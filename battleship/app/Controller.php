@@ -21,7 +21,8 @@ use app\EncoderData\JSONEncoder;
 use app\GameExceptions\GameException;
 use app\GameExceptions\NoCommandError;
 use app\GameExceptions\NoPageError;
-use app\Model\EnumTypeSession;
+use app\Model\EnumEncoder;
+use app\Model\EnumTypeGame;
 use app\Model\GameFacade;
 use app\View\MakerOnOnePage;
 use app\View\MakerStartPage;
@@ -73,17 +74,8 @@ class Controller{
 
     public function __construct()
     {
-        switch (self::typeDecodeEncoder)
-        {
-            case 0:
-                $this->decoder = new DataDecoder();
-                $this->encoder = new DataEncoder();
-                break;
-            case 1:
-                $this->decoder = new JSONDecoder();
-                $this->encoder = new JSONEncoder();
-                break;
-        }
+        $this->decoder = FactoriesConfigurator::getDataDecoderFactory()->createDecoder();
+        $this->encoder = FactoriesConfigurator::getDataEncoderFactory()->createEncode();
     }
 
     public function start()
@@ -121,7 +113,7 @@ class Controller{
             switch ($command) {
                 case self::NEW_SESSION_COMMAND:
                     $this->checkField(self::TYPE_NAME_PARAM);
-                    $type = new EnumTypeSession($_POST[self::TYPE_NAME_PARAM]);
+                    $type = $_POST[self::TYPE_NAME_PARAM];
                     echo $model->newSession($type);
                     break;
                 case self::NEW_PLAYER_COMMAND:
@@ -173,6 +165,7 @@ class Controller{
         {
             echo "Error!<br>";
             echo $e->getName();
+            echo $e->getMessage();
         }
     }
 }

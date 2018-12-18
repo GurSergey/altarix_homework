@@ -1,17 +1,16 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: serge
- * Date: 11.11.2018
- * Time: 22:38
+ * Класс посредник предоставляющий интерфейс между контроллером
+ * и моделью
  */
 namespace app\Model;
 
 class GameFacade
 {
-    public function newSession(EnumTypeSession $type)
+    public function newSession(int $type)
     {
-        $session = new Session($type);
+        GameLocator::setTypeGameCreate($type);
+        $session = new Session();
         $session->saveOnFile();
         return $session->getId();
     }

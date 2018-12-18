@@ -16,8 +16,10 @@ namespace app;
 
 class App
 {
+
     public function __construct()
     {
+        FactoriesConfigurator::getRepositorySessionFactory();
         (new Controller())->start();
     }
 }

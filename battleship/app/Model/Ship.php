@@ -10,9 +10,51 @@ namespace app\Model;
 
 class Ship
 {
-    private $x;
-    private $y;
     private $size;
+    private $cells;
 
+    public function getSize():int
+    {
+        return $this->size;
+    }
+
+    public function setSize(int $size)
+    {
+        $this->size = $size;
+    }
+
+    public function setCell(Cell $cell)
+    {
+        $this->cells[] = $cell;
+    }
+
+    public function isSunk():bool
+    {
+        $flag = true;
+        foreach($this->cells as $cell) {
+            if($cell->getIsShot()==false)
+            {
+                $flag = false;
+                break;
+            }
+        }
+        return $flag;
+    }
+
+    public function containCell(int $x, int $y)
+    {
+        $flag = false;
+        //var_dump($this->cells );
+        foreach($this->cells as $cell)
+        {
+
+            if(($cell->getX()==$x)&&($cell->getY()==$y))
+            {
+                $flag = true;
+                break;
+            }
+        }
+        return $flag;
+    }
 
 }

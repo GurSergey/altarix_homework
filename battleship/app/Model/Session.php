@@ -6,6 +6,7 @@
 namespace app\Model;
 
 use app\ConstantsGame;
+use app\FactoriesConfigurator;
 use app\GameExceptions\NumPlayerError;
 use app\Repository\RepositorySessionSerializing;
 
@@ -19,33 +20,36 @@ class Session
     private $timeLastAction;
 
     private $players;
-    private $type;
+   // private $type;
 
 
-
-
-
-
-    public function __construct(EnumTypeSession $type)
+    public function __construct()
     {
 
         $this->timeCreated = time();
         $this->timeLastAction = time();
-        $this->type = $type;
-        $this->id = (new RepositorySessionSerializing())->saveSession($this);
+        //$this->type = $type;
+        $repository = FactoriesConfigurator::getRepositorySessionFactory()->createRepositorySession();
+        //$this->id = (new RepositorySessionSerializing())->saveSession($this);
+        $this->id = $repository->saveSession($this);
 
         //file_put_contents(START_DIR.DIRECTORY_SEPARATOR.self::dir.DIRECTORY_SEPARATOR.'current.txt',$this->id);
-        $this->currentGame = new Game($this->type);
+
+        //$this->currentGame = new GameOnOneComputer($this->type);
+        $this->currentGame = GameLocator::getGame();
     }
 
     public function newGame()
     {
-        $this->currentGame = new Game($this->type);
+        //$this->currentGame = new GameOnOneComputer($this->type);
+        $this->currentGame = GameLocator::getGame();
     }
 
     public function saveOnFile()
     {
-        (new RepositorySessionSerializing())->saveSession($this);
+        $repository = FactoriesConfigurator::getRepositorySessionFactory()->createRepositorySession();
+        $repository->saveSession($this);
+        //(new RepositorySessionSerializing())->saveSession($this);
     }
 
     public function getGame():Game
@@ -69,7 +73,9 @@ class Session
 
     public static function loadFromFile($id):Session
     {
-        return (new RepositorySessionSerializing())->loadSession($id);
+        $repository = FactoriesConfigurator::getRepositorySessionFactory()->createRepositorySession();
+        return $repository->loadSession($id);
+        //return (new RepositorySessionSerializing())->loadSession($id);
     }
 
 

@@ -96,6 +96,9 @@ $(document).ready(function() {
                 $($($(".playArea")[num]).find(".playSquare").get(i)).addClass("hitSquare");
             }
             else
+            if ((stateBusy1[i] == '1') && (stateHit1[i] == '2')){
+                $($($(".playArea")[num]).find(".playSquare").get(i)).addClass("hitShip");}
+            else
             if ((stateBusy1[i] == '1') && (stateHit1[i] == '0') && (isYours)){
                 $($($(".playArea")[num]).find(".playSquare").get(i)).addClass("notEmpty");}
             else
@@ -115,7 +118,7 @@ $(document).ready(function() {
                 response(bodyEnum.newPlayer1(), function(data)
                 {
                     console.log(data);
-                    $("#informationLabel").text("Введите имя игрок 2");
+                    $("#informationLabel").text("Введите имя игрок 2.");
                     currentState = stateEnum.inputNamePlayer2;
                 });
                 break;
@@ -123,7 +126,7 @@ $(document).ready(function() {
                 response(bodyEnum.newPlayer2(), function(data)
                 {
                     console.log(data);
-                    $("#informationLabel").text("Расставьте корабли игрок 1");
+                    $("#informationLabel").text("Расставьте корабли игрок 1.");
                     $($(".playField").get(0)).removeClass("unActive").addClass("placement");
                     currentState = stateEnum.placementShips1;
                 });
@@ -132,19 +135,31 @@ $(document).ready(function() {
                 response(bodyEnum.placementShips1(), function(data)
                 {
                     console.log(data);
-                    $($(".playField").get(0)).removeClass("placement").addClass("unActive");
-                    $($(".playField").get(1)).addClass("placement");
-                    $("#informationLabel").text("Расставьте корабли игрок 2");
-                    currentState = stateEnum.placementShips2;
+                    if(data.includes("Error"))
+                    {
+                        alert("Ошибка размещения. Еще раз разместите.");
+                    }
+                    else {
+                        $($(".playField").get(0)).removeClass("placement").addClass("unActive");
+                        $($(".playField").get(1)).addClass("placement");
+                        $("#informationLabel").text("Расставьте корабли игрок 2.");
+                        currentState = stateEnum.placementShips2;
+                    }
                 });
                 break;
             case stateEnum.placementShips2:
                 response(bodyEnum.placementShips2(), function(data)
                 {
                     console.log(data);
-                    $("#informationLabel").text("Нажмите далее игрок 1");
-                    $($(".playField").get(1)).removeClass("placement").addClass("unActive");
-                    currentState = stateEnum.waitPlayer1;
+                    if(data.includes("Error"))
+                    {
+                        alert("Ошибка размещения. Еще раз разместите.");
+                    }
+                    else {
+                        $("#informationLabel").text("Нажмите далее игрок 1.");
+                        $($(".playField").get(1)).removeClass("placement").addClass("unActive");
+                        currentState = stateEnum.waitPlayer1;
+                    }
                 });
                 break;
             case stateEnum.waitPlayer1:
@@ -152,7 +167,7 @@ $(document).ready(function() {
                 {
                     console.log(data);
                     setStateField(data, 0, true);
-                    $("#informationLabel").text("Делайте свой ход игрок 1");
+                    $("#informationLabel").text("Делайте свой ход игрок 1.");
                     $($(".playField").get(1)).removeClass("placement");
                     currentState = stateEnum.movePlayer1;
                     response(bodyEnum.stateField2(), function(data)
@@ -174,8 +189,8 @@ $(document).ready(function() {
                     console.log(i);
                     if($($($(".playField")[1]).find(".playSquare").get(i)).hasClass("isSelect"))
                     {
-                        x = i %10;
-                        y = Math.floor(i/10);
+                        y = i %10;
+                        x = Math.floor(i/10);
                     }
                 }
                 for(var i = 0; i<$(".playSquare").length; i++)
@@ -191,19 +206,19 @@ $(document).ready(function() {
                     console.log(data);
                         str =data;
                         if(str == "w") {
-                            $("#informationLabel").text("Игрок 1 выиграл конец игры");
+                            $("#informationLabel").text("Игрок 1 выиграл конец игры. Обновить для новой игры");
                             currentState = stateEnum.newGame;
                         }
                         else
                         if(str =='1')
                         {
-                            $("#informationLabel").text("Игрок 1 попал");
+                            $("#informationLabel").text("Игрок 1 попал. Стреляйте еще раз");
                             currentState = stateEnum.waitPlayer1;
                         }
                         else
                         if(str =='0')
                         {
-                            $("#informationLabel").text("Игрок 1 не попал. Передайте управление игроку 2");
+                            $("#informationLabel").text("Игрок 1 не попал. Передайте управление игроку 2.");
                             currentState = stateEnum.waitPlayer2;
                         }
                 });
@@ -214,7 +229,7 @@ $(document).ready(function() {
                 {
                     console.log(data);
                     setStateField(data, 1, true);
-                    $("#informationLabel").text("Делайте свой ход игрок 2");
+                    $("#informationLabel").text("Делайте свой ход игрок 2.");
                     $($(".playField").get(0)).removeClass("placement");
                     currentState = stateEnum.movePlayer2;
 
@@ -239,8 +254,8 @@ $(document).ready(function() {
                     //console.log(i);
                     if($($($(".playField").get(0)).find(".playSquare").get(i)).hasClass("isSelect"))
                     {
-                        x = i %10;
-                        y = Math.floor(i/10);
+                        y = i %10;
+                        x = Math.floor(i/10);
                     }
                 }
                 for(var i = 0; i<$(".playSquare").length; i++)
@@ -256,13 +271,13 @@ $(document).ready(function() {
                     console.log(data);
                     str = data;
                     if(str == "w") {
-                        $("#informationLabel").text("Игрок 2 выиграл конец игры");
+                        $("#informationLabel").text("Игрок 2 выиграл конец игры. Обновите страницу для новой игры");
                         currentState = stateEnum.newGame;
                     }
                     else
                     if(str =='1')
                     {
-                        $("#informationLabel").text("Игрок 2 попал");
+                        $("#informationLabel").text("Игрок 2 попал. Стреляйте еще раз");
                         currentState = stateEnum.waitPlayer2;
                     }
                     else

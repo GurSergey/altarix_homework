@@ -11,17 +11,15 @@
 namespace app\Model;
 
 
+use app\ConstantsGame;
+
 class Field
 {
     private $field;
-    //private $currentSquare;
+    private $ships;
 
-    const SIZE_FIELD = 10;
-    const COUNT_OF_FIVE_DECK_SHIPS = 1;
-    const COUNT_OF_FOUR_DECK_SHIPS = 2;
-    const COUNT_OF_THREE_DECK_SHIPS = 3;
-    const COUNT_OF_TWO_DECK_SHIPS = 4;
-    const COUNT_OF_ONE_DECK_SHIPS = 5;
+    const SIZE_FIELD = ConstantsGame::SIZE_FIELD;
+
 
     public function __construct()
     {
@@ -30,49 +28,67 @@ class Field
             $this->field[$i] = array();
             for($i1 = 0; $i1< self::SIZE_FIELD; $i1++)
             {
-                $this->field[$i][$i1] = new Cell(false);
+                $cell = new Cell(false);
+                $this->field[$i][$i1] = $cell;
+                $cell->setX($i);
+                $cell->setY($i1);
             }
         }
     }
 
-    public function shipsIsSunk()
+    private function searchCell(int $x, int $y):Cell
     {
-        $flag = true;
-        if (is_array($this->field))
         foreach ($this->field as $line)
         {
-            foreach ($line as $square)
+            foreach ($line as $cell)
             {
-                if($square->getBusy() && !$square->getIsShot()) {
-                    $flag = false;
-                    break(2);
-                }
+                if($cell->getX()==$x && $cell->getY()==$y)
+                    return $cell;
             }
         }
-        return $flag;
     }
 
     public function shotOnSquare(int $x, int $y): bool
     {
-        $this->field[$y][$x]->shot();
-
-        return $this->field[$y][$x]->getBusy();
-
-    }
-
-    public function checkField():bool
-    {
-
+        $cell = $this->searchCell($x, $y);
+        $cell->shot();
+        return $cell->getBusy();
     }
 
     public function setBusyState($x, $y)
     {
-        $this->field[$x][$y]->setBusy(true);
+        $this->searchCell($x, $y)->setBusy(true);
     }
 
-    public function getSquare($x, $y):Cell
+    public function getCell($x, $y):Cell
     {
-        return $this->field[$x][$y];
+        return $this->searchCell($x, $y);
     }
+
+    public function setCell($x, $y, Cell $cell)
+    {
+        $this->field[$x][$y] = $cell;
+    }
+
+    public function addShip(Ship $ship)
+    {
+        $this->ships[] = $ship;
+    }
+
+    public function getShipByCell($x, $y):Ship
+    {
+        foreach ($this->ships as $ship)
+        {
+           // var_dump($ship->getSize());
+            if( $ship->containCell($x, $y))
+                return $ship;
+        }
+    }
+
+    public function returnShips():array
+    {
+        return $this->ships;
+    }
+
 
 }

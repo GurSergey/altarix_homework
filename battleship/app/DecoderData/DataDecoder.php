@@ -23,6 +23,7 @@ class DataDecoder implements Decoder
 
     public function decodeField(string $strBusy):Field
     {
+
         $field = new Field();
         $state = explode(' ', $strBusy);
         for($i = 0; $i < Field::SIZE_FIELD; $i++)
